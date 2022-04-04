@@ -12,7 +12,7 @@ const getMediaTracksWithConstraints = async (
   }
 };
 
-export function useUserMedia(constraints: MediaStreamConstraints) {
+export function useUserMediaStream(constraints: MediaStreamConstraints) {
   const [userMediaStream, setUserMediaStream] = useState<MediaStream | null>(
     null,
   );
