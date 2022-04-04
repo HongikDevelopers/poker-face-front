@@ -13,7 +13,9 @@ const getMediaTracksWithConstraints = async (
 };
 
 export function useUserMedia(constraints: MediaStreamConstraints) {
-  const [userMediaStream, setUserMediaStream] = useState<MediaStream>();
+  const [userMediaStream, setUserMediaStream] = useState<MediaStream | null>(
+    null,
+  );
 
   useEffect(
     function () {
