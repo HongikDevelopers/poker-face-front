@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const getMediaTracksWithConstraints = async (
   constraints: MediaStreamConstraints,
@@ -7,14 +7,16 @@ const getMediaTracksWithConstraints = async (
     const stream = await navigator.mediaDevices.getUserMedia(constraints);
     return [...stream.getTracks()];
   } catch (err) {
+    // TODO:
+    // 1. OverconstrainedError 처리
     console.error(err);
     return [];
   }
 };
 
 export function useUserMediaStream(constraints: MediaStreamConstraints) {
-  const [userMediaStream, setUserMediaStream] = useState<MediaStream | null>(
-    null,
+  const [userMediaStream, setUserMediaStream] = useState<MediaStream>(
+    new MediaStream(),
   );
 
   useEffect(
@@ -29,7 +31,10 @@ export function useUserMediaStream(constraints: MediaStreamConstraints) {
         const tracks = [...videoTracks, ...audioTracks];
         const stream = new MediaStream(tracks);
 
-        setUserMediaStream(stream);
+        setUserMediaStream((prevStream) => {
+          prevStream.getTracks().forEach((track) => track.stop());
+          return stream;
+        });
       };
 
       getUserMedia();
